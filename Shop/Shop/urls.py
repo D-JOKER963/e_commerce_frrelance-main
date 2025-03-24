@@ -25,5 +25,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name="index"),
     path('ajouter-au-panier/<slug:product_slug>/', views.ajouter_au_panier, name='ajouter_au_panier'),
-    path('panier/', include('Commande.urls')),
+    path('', include('Commande.urls')),
+    path('', include('Commande.urls')),
+    path('', include('Commande.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

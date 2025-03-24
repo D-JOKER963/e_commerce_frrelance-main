@@ -3,289 +3,185 @@
 {% load static %}
 
 {% block content %}
-	<title>Checkout | Canvas</title>
+
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+    <div class="container clearfix">
+        <h1>Mon panier</h1>
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+            <li class="breadcrumb-item"><a href="#">Boutique</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Mon Panier</li>
+        </ol>
+    </div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+    <div class="content-wrap">
+        <div class="container clearfix">
+
+            <div class="row clearfix">
+                <div class="col-lg-6">
+                    <h3>Informations de facturation</h3>
+                    <form id="billing-form" name="billing-form" class="nobottommargin" action="{% url 'enregistrer_commande' %}" method="post">
+                        {% csrf_token %}
+                        <div class="col_half">
+                            <label for="prenom">Prénom :</label>
+                            <input type="text" id="prenom" name="prenom" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="col_half col_last">
+                            <label for="nom">Nom :</label>
+                            <input type="text" id="nom" name="nom" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="col_full">
+                            <label for="ville">Ville :</label>
+                            <input type="text" id="ville" name="ville" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="col_full">
+                            <label for="quartier">Quartier <span style="font-style:italic; text-transform:lowercase">(Donner une brève description de votre emplacement afin de faciliter la livraison)</span></label>
+                            <input type="text" id="quartier" name="quartier" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="col_full">
+                            <label for="tel">Votre numéro de telephone :</label>
+                            <input type="number" id="tel" name="tel" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+
+                         <input type="hidden" id="total-panier-input" name="total_panier" value="" required>
+                        <input type="submit" class="button button-3d fright" value="Passer la commande"/>
+                    </form>
+                </div>
+
+                <div class="col-lg-6">
+                    <h4>Vos Commandes</h4>
+                    <div class="table-responsive">
+                        <table class="table cart">
+                            <thead>
+                            <tr>
+                                <th class="cart-product-thumbnail">&nbsp;</th>
+                                <th class="cart-product-name">Produit</th>
+                                <th class="cart-product-quantity">Quantité</th>
+                                <th class="cart-product-subtotal">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in produits_panier %}
+                            <tr class="cart_item">
+                                <td class="cart-product-thumbnail">
+                                    {% for image in item.produit.imageproduit_set.all %}
+                                    <a href="#"><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
+                                    {% endfor %}
+                                </td>
+                                <td class="cart-product-name">
+                                    <a href="#">{{ item.produit.nom }}</a>
+                                </td>
+                                <td class="cart-product-quantity">
+                                    <div class="quantity clearfix">
+                                        {{ item.quantite }}x
+                                    </div>
+                                </td>
+                                <td class="cart-product-subtotal">
+                                    <span class="amount">{{ item.total|floatformat:2 }} XOF</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <h4>Total du Panier</h4>
+                    <div class="table-responsive">
+                        <table class="table cart">
+                            <tbody>
+                            <tr class="cart_item">
+                                <td class="notopborder cart-product-name">
+                                    <strong>Total du panier</strong>
+                                </td>
+                                <td class="notopborder cart-product-name">
+                                    <span class="amount">{{ total_panier|floatformat:2 }} XOF</span>
+                                </td>
+                            </tr>
+                            <tr class="cart_item">
+                                <td class="cart-product-name">
+                                    <strong>Livraison</strong>
+                                </td>
+                                <td class="cart-product-name">
+                                    <span class="amount">Livraison gratuite</span>
+                                </td>
+                            </tr>
+                            <tr class="cart_item">
+                                <td class="cart-product-name">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="cart-product-name">
+                                    <span class="amount color lead"><strong>{{ total_panier|floatformat:2 }} XOF</strong></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
 
-		<!-- Page Title
-		============================================= -->
-		<section id="page-title">
 
-			<div class="container clearfix">
-				<h1>Mon panier</h1>
-				<ol class="breadcrumb">
-					<li class="breadcrumb-item"><a href="#">Home</a></li>
-					<li class="breadcrumb-item"><a href="#">Shop</a></li>
-					<li class="breadcrumb-item active" aria-current="page">Checkout</li>
-				</ol>
-			</div>
+                    <!-- Button to Delete Cart -->
+                    <button id="delete-cart-btn" class="button button-3d fright">Vider le panier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- #content end -->
 
-		</section><!-- #page-title end -->
+<div id="gotoTop" class="icon-angle-up"></div>
 
-		<!-- Content
-		============================================= -->
-		<section id="content">
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/functions.js"></script>
 
-			<div class="content-wrap">
+<script>
+    document.getElementById("delete-cart-btn").addEventListener("click", function() {
+        if (confirm("Êtes-vous sûr de vouloir supprimer tous les produits de votre panier ? Cette action est irréversible.")) {
+            fetch("{% url 'supprimer_panier' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+</script>
+<script>
+    window.onload = function() {
+        // Récupère l'élément contenant le montant total
+        let totalPanierElement = document.querySelector('.cart-product-name .amount');
 
-				<div class="container clearfix">
+        // Si l'élément existe
+        if (totalPanierElement) {
+            // Récupère la valeur du total en XOF
+            let totalPanier = parseFloat(totalPanierElement.textContent.replace(' XOF', '').trim());
 
-					<div class="col_half">
-						<div class="card">
-							<div class="card-body">
-								Returning customer? <a href="login-register.html">Click here to login</a>
-							</div>
-						</div>
-					</div>
-					<div class="col_half col_last">
-						<div class="card">
-							<div class="card-body">
-								Have a coupon? <a href="login-register.html">Click here to enter your code</a>
-							</div>
-						</div>
-					</div>
+            console.log("Montant total du panier: ", totalPanier);
 
-					<div class="clear"></div>
+            // Si tu souhaites mettre à jour un autre élément ou utiliser ce montant
+            // Par exemple, dans un champ caché pour l'envoyer avec le formulaire :
+            document.getElementById("total-panier-input").value = totalPanier;
+        }
+    }
+</script>
 
-					<div class="row clearfix">
-						<div class="col-lg-6">
-							<h3>Billing Address</h3>
-
-							<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Unde, vel odio non dicta provident sint ex autem mollitia dolorem illum repellat ipsum aliquid illo similique sapiente fugiat minus ratione.</p>
-
-							<form id="billing-form" name="billing-form" class="nobottommargin" action="#" method="post">
-
-								<div class="col_half">
-									<label for="billing-form-name">Name:</label>
-									<input type="text" id="billing-form-name" name="billing-form-name" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_half col_last">
-									<label for="billing-form-lname">Last Name:</label>
-									<input type="text" id="billing-form-lname" name="billing-form-lname" value="" class="sm-form-control" />
-								</div>
-
-								<div class="clear"></div>
-
-								<div class="col_full">
-									<label for="billing-form-companyname">Company Name:</label>
-									<input type="text" id="billing-form-companyname" name="billing-form-companyname" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<label for="billing-form-address">Address:</label>
-									<input type="text" id="billing-form-address" name="billing-form-address" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<input type="text" id="billing-form-address2" name="billing-form-adress" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<label for="billing-form-city">City / Town</label>
-									<input type="text" id="billing-form-city" name="billing-form-city" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_half">
-									<label for="billing-form-email">Email Address:</label>
-									<input type="email" id="billing-form-email" name="billing-form-email" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_half col_last">
-									<label for="billing-form-phone">Phone:</label>
-									<input type="text" id="billing-form-phone" name="billing-form-phone" value="" class="sm-form-control" />
-								</div>
-
-							</form>
-						</div>
-						<div class="col-lg-6">
-							<h3 class="">Shipping Address</h3>
-
-							<form id="shipping-form" name="shipping-form" class="nobottommargin" action="#" method="post">
-
-								<div class="col_half">
-									<label for="shipping-form-name">Name:</label>
-									<input type="text" id="shipping-form-name" name="shipping-form-name" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_half col_last">
-									<label for="shipping-form-lname">Last Name:</label>
-									<input type="text" id="shipping-form-lname" name="shipping-form-lname" value="" class="sm-form-control" />
-								</div>
-
-								<div class="clear"></div>
-
-								<div class="col_full">
-									<label for="shipping-form-companyname">Company Name:</label>
-									<input type="text" id="shipping-form-companyname" name="shipping-form-companyname" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<label for="shipping-form-address">Address:</label>
-									<input type="text" id="shipping-form-address" name="shipping-form-address" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<input type="text" id="shipping-form-address2" name="shipping-form-adress" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<label for="shipping-form-city">City / Town</label>
-									<input type="text" id="shipping-form-city" name="shipping-form-city" value="" class="sm-form-control" />
-								</div>
-
-								<div class="col_full">
-									<label for="shipping-form-message">Notes <small>*</small></label>
-									<textarea class="sm-form-control" id="shipping-form-message" name="shipping-form-message" rows="6" cols="30"></textarea>
-								</div>
-
-							</form>
-						</div>
-						<div class="w-100 bottommargin"></div>
-						<div class="col-lg-6">
-							<h4>Your Orders</h4>
-
-							<div class="table-responsive">
-								<table class="table cart">
-									<thead>
-										<tr>
-											<th class="cart-product-thumbnail">&nbsp;</th>
-											<th class="cart-product-name">Product</th>
-											<th class="cart-product-quantity">Quantity</th>
-											<th class="cart-product-subtotal">Total</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="cart_item">
-											<td class="cart-product-thumbnail">
-												<a href="#"><img width="64" height="64" src="images/shop/thumbs/small/dress-3.jpg" alt="Pink Printed Dress"></a>
-											</td>
-
-											<td class="cart-product-name">
-												<a href="#">Pink Printed Dress</a>
-											</td>
-
-											<td class="cart-product-quantity">
-												<div class="quantity clearfix">
-													1x2
-												</div>
-											</td>
-
-											<td class="cart-product-subtotal">
-												<span class="amount">$39.98</span>
-											</td>
-										</tr>
-										<tr class="cart_item">
-											<td class="cart-product-thumbnail">
-												<a href="#"><img width="64" height="64" src="images/shop/thumbs/small/shoes-2.jpg" alt="Checked Canvas Shoes"></a>
-											</td>
-
-											<td class="cart-product-name">
-												<a href="#">Checked Canvas Shoes</a>
-											</td>
-
-											<td class="cart-product-quantity">
-												<div class="quantity clearfix">
-													1x1
-												</div>
-											</td>
-
-											<td class="cart-product-subtotal">
-												<span class="amount">$24.99</span>
-											</td>
-										</tr>
-										<tr class="cart_item">
-											<td class="cart-product-thumbnail">
-												<a href="#"><img width="64" height="64" src="images/shop/thumbs/small/tshirt-2.jpg" alt="Pink Printed Dress"></a>
-											</td>
-
-											<td class="cart-product-name">
-												<a href="#">Blue Men Tshirt</a>
-											</td>
-
-											<td class="cart-product-quantity">
-												<div class="quantity clearfix">
-													1x3
-												</div>
-											</td>
-
-											<td class="cart-product-subtotal">
-												<span class="amount">$41.97</span>
-											</td>
-										</tr>
-									</tbody>
-
-								</table>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<h4>Cart Totals</h4>
-
-							<div class="table-responsive">
-								<table class="table cart">
-									<tbody>
-										<tr class="cart_item">
-											<td class="notopborder cart-product-name">
-												<strong>Cart Subtotal</strong>
-											</td>
-
-											<td class="notopborder cart-product-name">
-												<span class="amount">$106.94</span>
-											</td>
-										</tr>
-										<tr class="cart_item">
-											<td class="cart-product-name">
-												<strong>Shipping</strong>
-											</td>
-
-											<td class="cart-product-name">
-												<span class="amount">Free Delivery</span>
-											</td>
-										</tr>
-										<tr class="cart_item">
-											<td class="cart-product-name">
-												<strong>Total</strong>
-											</td>
-
-											<td class="cart-product-name">
-												<span class="amount color lead"><strong>$106.94</strong></span>
-											</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-
-							<div class="accordion clearfix">
-								<div class="acctitle"><i class="acc-closed icon-ok-circle"></i><i class="acc-open icon-remove-circle"></i>Direct Bank Transfer</div>
-								<div class="acc_content clearfix">Donec sed odio dui. Nulla vitae elit libero, a pharetra augue. Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet.</div>
-
-								<div class="acctitle"><i class="acc-closed icon-ok-circle"></i><i class="acc-open icon-remove-circle"></i>Cheque Payment</div>
-								<div class="acc_content clearfix">Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur. Cras mattis consectetur purus sit amet fermentum.</div>
-
-								<div class="acctitle"><i class="acc-closed icon-ok-circle"></i><i class="acc-open icon-remove-circle"></i>Paypal</div>
-								<div class="acc_content clearfix">Nullam id dolor id nibh ultricies vehicula ut id elit. Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Duis mollis, est non commodo luctus. Aenean lacinia bibendum nulla sed consectetur.</div>
-							</div>
-							<a href="#" class="button button-3d fright">Faire la commande</a>
-						</div>
-					</div>
-				</div>
-
-			</div>
-
-		</section><!-- #content end -->
-
-
-	</div><!-- #wrapper end -->
-
-	<!-- Go To Top
-	============================================= -->
-	<div id="gotoTop" class="icon-angle-up"></div>
-
-	<!-- External JavaScripts
-	============================================= -->
-	<script src="js/jquery.js"></script>
-	<script src="js/plugins.js"></script>
-
-	<!-- Footer Scripts
-	============================================= -->
-	<script src="js/functions.js"></script>
 {% endblock %}

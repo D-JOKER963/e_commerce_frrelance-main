@@ -12,7 +12,7 @@ class ProduitCommandeInline(admin.TabularInline):
 
 class CommandeAdmin(admin.ModelAdmin):
     inlines = [ProduitCommandeInline]
-    list_display = ('id', 'nom_client', 'produits_commandes','date_commande','adresse')
+    list_display = ('id', 'nom_client', 'produits_commandes','date_commande','adresse','telephone','montant_total')
 
     def produits_commandes(self, obj):
         produits = ProduitCommande.objects.filter(commande=obj)  # Récupérer tous les produits de la commande

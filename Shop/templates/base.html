@@ -27,37 +27,89 @@
     <!-- Document Title
     ============================================= -->
     <title>Accueil | Shop</title>
+    <title>Mon Panier | Canvas</title>
 
     <style>
+        .messages li {
+        padding: 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        word-wrap: break-word; /* Évite les débordements de texte */
+    }
 
-        .revo-slider-emphasis-text {
-            font-size: 58px;
-            font-weight: 700;
-            letter-spacing: 1px;
-            font-family: 'Raleway', sans-serif;
-            padding: 15px 20px;
-            border-top: 2px solid #FFF;
-            border-bottom: 2px solid #FFF;
+    .messages .success {
+        background-color: #4CAF50; /* Vert */
+        border: 1px solid #388E3C;
+    }
+
+    .messages .error {
+        background-color: #f44336; /* Rouge */
+        border: 1px solid #d32f2f;
+    }
+
+    .messages .info {
+        background-color: #2196F3; /* Bleu */
+        border: 1px solid #1976D2;
+    }
+
+    .messages .warning {
+        background-color: #FF9800; /* Orange */
+        border: 1px solid #F57C00;
+    }
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+            transform: translateY(-10px);
         }
-
-        .revo-slider-desc-text {
-            font-size: 20px;
-            font-family: 'Lato', sans-serif;
-            width: 650px;
-            text-align: center;
-            line-height: 1.5;
+        30% {
+            opacity: 1;
+            transform: translateY(0);
         }
-
-        .revo-slider-caps-text {
-            font-size: 16px;
-            font-weight: 400;
-            letter-spacing: 3px;
-            font-family: 'Raleway', sans-serif;
+        70% {
+            opacity: 1;
+            transform: translateY(0);
         }
+        100% {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+    }
 
-        .tp-video-play-button { display: none !important; }
+    .messages li {
+        animation: fadeInOut 5s ease-in-out forwards;
+    }
+            .revo-slider-emphasis-text {
+                font-size: 58px;
+                font-weight: 700;
+                letter-spacing: 1px;
+                font-family: 'Raleway', sans-serif;
+                padding: 15px 20px;
+                border-top: 2px solid #FFF;
+                border-bottom: 2px solid #FFF;
+            }
 
-        .tp-caption { white-space: nowrap; }
+            .revo-slider-desc-text {
+                font-size: 20px;
+                font-family: 'Lato', sans-serif;
+                width: 650px;
+                text-align: center;
+                line-height: 1.5;
+            }
+
+            .revo-slider-caps-text {
+                font-size: 16px;
+                font-weight: 400;
+                letter-spacing: 3px;
+                font-family: 'Raleway', sans-serif;
+            }
+
+            .tp-video-play-button { display: none !important; }
+
+            .tp-caption { white-space: nowrap; }
 
     </style>
     <script>
@@ -96,7 +148,13 @@
 </head>
 
 <body class="stretched">
-
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li class="{{ message.tags }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
 <!-- Document Wrapper
 ============================================= -->
 <div id="wrapper" class="clearfix">
@@ -565,9 +623,7 @@
                                         {% for image in item.produit.imageproduit_set.all %}
                                         <a href="#"><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
                                         {% endfor %}
-                                        <a href="#">
-                                            <img src="{{ item.produit.image.url }}" alt="{{ item.produit.nom }}"/>
-                                        </a>
+
                                     </div>
                                     <div class="top-cart-item-desc">
                                         <a href="#">{{ item.produit.nom }}</a>
