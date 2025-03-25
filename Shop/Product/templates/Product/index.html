@@ -34,7 +34,7 @@
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
                          data-endeasing="Power4.easeIn" style=""><img
-                            src="{% static 'images/slider/rev/shop/girl1.jpg' %}" alt="Girl"></div>
+                            src="{% static 'images/slider/image_assistance.jpg' %}" alt="Girl"></div>
 
                     <div class="tp-caption ltl tp-resizeme revo-slider-caps-text uppercase"
                          data-x="570"
@@ -48,7 +48,7 @@
                          data-elementdelay="0.01"
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
-                         data-endeasing="Power4.easeIn" style=" color: #333;">Get your Shopping Bags Ready
+                         data-endeasing="Power4.easeIn" style=" color: #333;">Faites votre achat chez nous
                     </div>
 
                     <div class="tp-caption ltl tp-resizeme revo-slider-emphasis-text nopadding noborder"
@@ -64,7 +64,7 @@
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
                          data-endeasing="Power4.easeIn" style=" color: #333; max-width: 430px; line-height: 1.15;">
-                        Latest Fashion<br>Collections
+                        Toujours à votre<br>Service
                     </div>
 
                     <div class="tp-caption ltl tp-resizeme revo-slider-desc-text tleft"
@@ -79,8 +79,9 @@
                          data-elementdelay="0.01"
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
-                         data-endeasing="Power4.easeIn" style=" color: #333; max-width: 550px; white-space: normal;">We
-                        have created a Design that looks Awesome, performs Brilliantly &amp; senses Orientations.
+                         data-endeasing="Power4.easeIn" style=" color: #333; max-width: 550px; white-space: normal;">
+                        <!--p>We
+                        have created a Design that looks Awesome, performs Brilliantly &amp; senses Orientations.</--p-->
                     </div>
 
                     <div class="tp-caption ltl tp-resizeme"
@@ -95,8 +96,8 @@
                          data-elementdelay="0.01"
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
-                         data-endeasing="Power4.easeIn" style=""><a href="#"
-                                                                    class="button button-border button-large button-rounded tright nomargin"><span>Start Shopping</span>
+                         data-endeasing="Power4.easeIn" style=""><a href="#tab-3"
+                                                                    class="button button-border button-large button-rounded tright nomargin"><span>Commencer votre achat</span>
                         <i class="icon-angle-right"></i></a></div>
 
                 </li>
@@ -133,7 +134,7 @@
                          data-elementdelay="0.01"
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
-                         data-endeasing="Power4.easeIn" style=" color: #333;">Buy Stylish Bags at Discounted Prices
+                         data-endeasing="Power4.easeIn" style=" color: #333;">Acheter des articles de tout genre
                     </div>
 
                     <div class="tp-caption ltl tp-resizeme revo-slider-emphasis-text nopadding noborder"
@@ -148,7 +149,7 @@
                          data-elementdelay="0.01"
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
-                         data-endeasing="Power4.easeIn" style=" color: #333; line-height: 1.15;">Messenger Bags
+                         data-endeasing="Power4.easeIn" style=" color: #333; line-height: 1.15;">A moindre coût
                     </div>
 
                     <div class="tp-caption ltl tp-resizeme revo-slider-desc-text tleft"
@@ -164,8 +165,8 @@
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
                          data-endeasing="Power4.easeIn" style=" color: #333; max-width: 550px; white-space: normal;">
-                        Grantees insurmountable challenges invest protect, growth improving quality social
-                        entrepreneurship.
+                        <!--p> Grantees insurmountable challenges invest protect, growth improving quality social
+                       entrepreneurship. </p-->
                     </div>
 
                     <div class="tp-caption ltl tp-resizeme"
@@ -180,8 +181,8 @@
                          data-elementdelay="0.01"
                          data-endelementdelay="0.1"
                          data-endspeed="1000"
-                         data-endeasing="Power4.easeIn" style=""><a href="#"
-                                                                    class="button button-border button-large button-rounded tright nomargin"><span>Start Shopping</span>
+                         data-endeasing="Power4.easeIn" style=""><a href="#tab-3"
+                                                                    class="button button-border button-large button-rounded tright nomargin"><span>Débuter vos achats</span>
                         <i class="icon-angle-right"></i></a></div>
 
                     <div class="tp-caption utb tp-resizeme revo-slider-caps-text uppercase"
@@ -261,10 +262,11 @@
                             <div class="product clearfix">
                                 <div class="product-image">
                                     {% for image in product.imageproduit_set.all %}
-                                    <a href="#" ><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
+                                    <a href="#"><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
                                     {% endfor %}
                                     <div class="product-overlay">
-                                        <a href="{% url 'ajouter_au_panier' product.slug %}" class="add-to-cart"  data-produit-slug="{{ product.slug }}">
+                                        <a href="{% url 'ajouter_au_panier' product.slug %}" class="add-to-cart"
+                                           data-produit-slug="{{ product.slug }}">
                                             <i class="icon-shopping-cart"></i>
                                             <span> Ajouter au panier</span>
                                         </a>
@@ -301,40 +303,20 @@
             </div>
 
 
-
             <div class="clear bottommargin-sm"></div>
 
             <div class="col_one_third">
                 <div class="fancy-title title-border">
-                    <h4>About Us</h4>
+                    <h4>A propos de nous</h4>
                 </div>
-                <p>Jane Jacobs educate, leverage affiliate Martin Luther King Jr. agriculture conflict resolution
-                    dignity. Cooperation international progress non-partisan lasting change meaningful.</p>
+                <p>Nous vous proposons des produits de qualité, livrable en temps à un prix très abordable
+                </p>
             </div>
 
-            <div class="col_one_third subscribe-widget">
-                <div class="fancy-title title-border">
-                    <h4>Subscribe for Offers</h4>
-                </div>
-                <p>Subscribe to Our Newsletter to get Important News, Amazing Offers &amp; Inside Scoops:</p>
-                <div class="widget-subscribe-form-result"></div>
-                <form id="widget-subscribe-form2" action="include/subscribe.php" method="post" class="nobottommargin">
-                    <div class="input-group divcenter">
-                        <div class="input-group-prepend">
-                            <div class="input-group-text"><i class="icon-email2"></i></div>
-                        </div>
-                        <input type="email" name="widget-subscribe-form-email" class="form-control required email"
-                               placeholder="Enter your Email">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="submit">Subscribe</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
 
             <div class="col_one_third col_last">
                 <div class="fancy-title title-border">
-                    <h4>Connect with Us</h4>
+                    <h4>Restons en ligne via</h4>
                 </div>
 
                 <a href="#" class="social-icon si-facebook" data-toggle="tooltip" data-placement="top" title="Facebook">
@@ -348,49 +330,23 @@
                     <i class="icon-delicious"></i>
                 </a>
 
-                <a href="#" class="social-icon si-paypal" data-toggle="tooltip" data-placement="top" title="PayPal">
-                    <i class="icon-paypal"></i>
-                    <i class="icon-paypal"></i>
+                <a href="href=https://wa.me/+22870436043" class="social-icon si-whatsapp" data-toggle="tooltip" data-placement="top" title="WhatsApp">
+                    <i class="icon-whatsapp"></i>
+                    <i class="icon-whatsapp"></i>
                 </a>
 
-                <a href="#" class="social-icon si-flattr" data-toggle="tooltip" data-placement="top" title="Flattr">
-                    <i class="icon-flattr"></i>
-                    <i class="icon-flattr"></i>
-                </a>
-
-                <a href="#" class="social-icon si-android" data-toggle="tooltip" data-placement="top" title="Android">
-                    <i class="icon-android"></i>
-                    <i class="icon-android"></i>
-                </a>
-
-                <a href="#" class="social-icon si-smashmag" data-toggle="tooltip" data-placement="top"
-                   title="Smashing Magazine">
-                    <i class="icon-smashmag"></i>
-                    <i class="icon-smashmag"></i>
-                </a>
 
                 <a href="#" class="social-icon si-gplus" data-toggle="tooltip" data-placement="top" title="Google+">
                     <i class="icon-gplus"></i>
                     <i class="icon-gplus"></i>
                 </a>
 
-                <a href="#" class="social-icon si-wikipedia" data-toggle="tooltip" data-placement="top"
+                <a href="#" class="social-icon si-shop" data-toggle="tooltip" data-placement="top"
                    title="Wikipedia">
                     <i class="icon-wikipedia"></i>
                     <i class="icon-wikipedia"></i>
                 </a>
 
-                <a href="#" class="social-icon si-stumbleupon" data-toggle="tooltip" data-placement="top"
-                   title="StumbleUpon">
-                    <i class="icon-stumbleupon"></i>
-                    <i class="icon-stumbleupon"></i>
-                </a>
-
-                <a href="#" class="social-icon si-foursquare" data-toggle="tooltip" data-placement="top"
-                   title="FourSquare">
-                    <i class="icon-foursquare"></i>
-                    <i class="icon-foursquare"></i>
-                </a>
 
                 <a href="#" class="social-icon si-call" data-toggle="tooltip" data-placement="top" title="Call">
                     <i class="icon-call"></i>
@@ -403,20 +359,20 @@
                     <i class="icon-ninetyninedesigns"></i>
                 </a>
 
-                <a href="#" class="social-icon si-forrst" data-toggle="tooltip" data-placement="top" title="Forrst">
+                <!--a href="#" class="social-icon si-forrst" data-toggle="tooltip" data-placement="top" title="Forrst">
                     <i class="icon-forrst"></i>
                     <i class="icon-forrst"></i>
                 </a>
 
-                <a href="#" class="social-icon si-digg" data-toggle="tooltip" data-placement="top" title="Digg">
+                <a-- href="#" class="social-icon si-digg" data-toggle="tooltip" data-placement="top" title="Digg">
                     <i class="icon-digg"></i>
                     <i class="icon-digg"></i>
-                </a>
+                </a-->
             </div>
 
             <div class="clear"></div>
 
-            <div class="fancy-title title-border title-center topmargin-sm">
+            <!--div class="fancy-title title-border title-center topmargin-sm">
                 <h4>Popular Brands</h4>
             </div>
 
@@ -439,7 +395,7 @@
                 <li><a href="#"><img src="{% static 'images/clients/logo/16.png' %}" alt="Clients"></a></li>
                 <li><a href="#"><img src="{% static 'images/clients/logo/19.png' %}" alt="Clients"></a></li>
                 <li><a href="#"><img src="{% static 'images/clients/logo/18.png' %}" alt="Clients"></a></li>
-            </ul>
+            </ul-->
 
         </div>
 
@@ -452,7 +408,7 @@
                             <i class="icon-thumbs-up2"></i>
                         </div>
                         <h3>100% Original</h3>
-                        <p class="notopmargin">We guarantee you the sale of Original Brands.</p>
+                        <p class="notopmargin">Nous vous guarantissons des produits de qualité.</p>
                     </div>
                 </div>
 
@@ -461,8 +417,8 @@
                         <div class="fbox-icon">
                             <i class="icon-credit-cards"></i>
                         </div>
-                        <h3>Payment Options</h3>
-                        <p class="notopmargin">We accept Visa, MasterCard and American Express.</p>
+                        <h3>Moyen de paiement</h3>
+                        <p class="notopmargin">Paiemant après livraison.</p>
                     </div>
                 </div>
 
@@ -471,8 +427,8 @@
                         <div class="fbox-icon">
                             <i class="icon-truck2"></i>
                         </div>
-                        <h3>Free Shipping</h3>
-                        <p class="notopmargin">Free Delivery to 100+ Locations on orders above $40.</p>
+                        <h3>Commandes gratuites</h3>
+                        <p class="notopmargin">Livraison gratuite peu importe votre localisation.</p>
                     </div>
                 </div>
 
@@ -481,8 +437,8 @@
                         <div class="fbox-icon">
                             <i class="icon-undo"></i>
                         </div>
-                        <h3>30-Days Returns</h3>
-                        <p class="notopmargin">Return or exchange items purchased within 30 days.</p>
+                        <h3>Satisfait ou Remboursé</h3>
+                        <p class="notopmargin">Livraison rapide et discrète.</p>
                     </div>
                 </div>
 
@@ -499,8 +455,8 @@
                 <div class="col_half subscribe-widget nobottommargin col_last">
 
                     <div class="heading-block topmargin-lg">
-                        <h3><strong>GET 20% OFF*</strong></h3>
-                        <span>Our App scales beautifully to different Devices.</span>
+                        <h3><strong>100% de guarantit</strong></h3>
+                        <span>Facilitez vos achats grace notre plateforme</span>
                     </div>
 
                     <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet cumque, perferendis accusamus
