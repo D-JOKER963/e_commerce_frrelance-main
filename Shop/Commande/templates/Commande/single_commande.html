@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="content">
+    <div class="content-wrap">
+        <div class="container clearfix">
+            <div class="table-responsive">
+                <table class="table cart">
+                    <thead>
+                        <tr>
+                            <th class="cart-product-thumbnail">&nbsp;</th>
+                            <th class="cart-product-name">Produit</th>
+                            <th class="cart-product-price">Prix</th>
+                            <th class="cart-product-quantity">Quantité</th>
+                            <th class="cart-product-subtotal">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="cart_item">
+                            {% for image in product.imageproduit_set.all %}
+                                {% if image.image %}
+                                    <td class="cart-product-thumbnail">
+                                        <a href="#"><img width="64" height="64" src="{{ image.image.url }}" alt="{{ product.nom }}"></a>
+                                    </td>
+                                {% endif %}
+                            {% endfor %}
+                            <td class="cart-product-name"><a href="#">{{ product.nom }}</a></td>
+                            <td class="cart-product-price">
+                                <span class="amount" data-price="{{ product.prix }}">{{ product.prix }}</span>
+                            </td>
+                            <td class="cart-product-quantity">
+                                <div class="quantity clearfix">
+
+                                    <input type="number" name="quantity" value="1" class="qty" min="1" data-price="{{ product.prix }}">
+
+                                </div>
+                            </td>
+                            <td class="cart-product-subtotal">
+                                <span class="amount total">{{ product.prix|floatformat:2 }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Formulaire de commande -->
+            <form id="order-form" method="POST">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="nom">Nom :</label>
+                        <input type="text" id="nom" name="nom" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="prenom">Prénom :</label>
+                        <input type="text" id="prenom" name="prenom" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="adresse">Adresse :</label>
+                        <input type="text" id="adresse" name="adresse" class="form-control" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="telephone">Téléphone :</label>
+                        <input type="tel" id="telephone" name="telephone" class="form-control" required>
+                    </div>
+                    <input type="hidden" name="quantite" id="hidden-quantity">
+                    <input type="hidden" name="montant_total" id="hidden-total">
+                </div>
+                <br>
+                <button type="submit" class="btn btn-primary">Commander</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function updateTotal(input) {
+            let quantity = parseInt(input.value);
+
+            // Vérification : quantité doit être >= 1
+            if (isNaN(quantity) || quantity < 1) {
+                quantity = 1; // Correction automatique
+                input.value = quantity;
+            }
+
+            let price = parseFloat(input.getAttribute('data-price'));
+            let totalCell = input.closest('tr').querySelector('.cart-product-subtotal .total');
+            let total = (quantity * price).toFixed(2);
+            totalCell.textContent = total;
+
+            // Mise à jour des champs cachés du formulaire
+            document.getElementById("hidden-quantity").value = quantity;
+            document.getElementById("hidden-total").value = total;
+        }
+
+        document.querySelectorAll('.qty').forEach(input => {
+            input.addEventListener('input', function() {
+                updateTotal(this);
+            });
+
+            input.addEventListener('blur', function() {
+                updateTotal(this);
+            });
+        });
+
+        document.querySelectorAll('.minus').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                let input = this.nextElementSibling;
+                let currentValue = parseInt(input.value) || 1;
+                if (currentValue > 1) {
+                    input.value = currentValue - 1;
+                    input.dispatchEvent(new Event('input'));
+                }
+            });
+        });
+
+        document.querySelectorAll('.plus').forEach(button => {
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                let input = this.previousElementSibling;
+                input.value = (parseInt(input.value) || 1) + 1;
+                input.dispatchEvent(new Event('input'));
+            });
+        });
+
+        // Mise à jour initiale
+        updateTotal(document.querySelector('.qty'));
+    });
+</script>
+{% endblock %}

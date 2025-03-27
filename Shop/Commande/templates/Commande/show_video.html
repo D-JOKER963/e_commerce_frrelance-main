@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <!-- Titre du produit -->
+            <h2 class="fw-bold text-primary">{{ product.nom }}</h2>
+            <p class="text-muted">{{ product.description }}</p>
+
+            {% for image in product.imageproduit_set.all %}
+            {% if image.video_desc %}
+            <!-- Conteneur de la vidéo avec effet d'ombre et de bord arrondi -->
+            <div class="video-container mt-4 shadow-lg rounded">
+                <video id="videoProduit" class="w-100 rounded" autoplay muted controls>
+                    <source src="{{ image.video_desc.url }}" type="video/mp4">
+                    Votre navigateur ne supporte pas la vidéo.
+                </video>
+            </div>
+            <button id="btnCommander" class="btn btn-primary btn-lg mt-4 px-4 py-2" disabled>
+                <i class="fas fa-shopping-cart"></i> Commander
+            </button>
+            {% else %}
+            <a href="{% url 'commande' product.slug %}" data-produit-slug="{{ product.slug }}">
+                <button class="btn btn-primary btn-lg mt-4 px-4 py-2">
+                    <i class="fas fa-shopping-cart"></i> Procéder à la commande
+                </button>
+            </a>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    let video = document.getElementById("videoProduit");
+    let btnCommander = document.getElementById("btnCommander");
+
+    // Désactiver le bouton "Commander" au début
+    if(btnCommander) {
+        btnCommander.disabled = true;
+    }
+
+    // Assurer que la vidéo démarre automatiquement (avec muted si nécessaire)
+    video.play().catch(function(err){
+        console.log("Autoplay a échoué :", err);
+    });
+
+    // Détection de la fin de la vidéo
+    video.addEventListener("ended", function () {
+        if(btnCommander) {
+            btnCommander.disabled = false;
+            btnCommander.classList.add("btn-success");
+        }
+
+        // Appel AJAX pour marquer la vidéo comme terminée
+        fetch("{% url 'video_finished' %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": "{{ csrf_token }}",  // Assurez-vous que CSRF token est présent
+            },
+            body: JSON.stringify({ finished: true })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log("Vidéo marquée comme terminée :", data);
+        })
+        .catch(error => {
+            console.error("Erreur lors du marquage :", error);
+        });
+    });
+
+    // Détection de la mise en pause
+    video.addEventListener("pause", function () {
+        if (!video.ended) {
+            alert("Vous devez regarder la vidéo en entier avant de pouvoir commander !");
+            video.play();
+        }
+    });
+
+    // Redirection après clic sur le bouton Commander
+    if(btnCommander) {
+        btnCommander.addEventListener("click", function () {
+            window.location.href = "{% url 'commande' product.slug %}";
+        });
+    }
+});
+</script>
+
+
+<!-- Styles CSS -->
+<style>
+    .video-container {
+        position: relative;
+        width: 100%;
+        padding-bottom: 56.25%; /* 16:9 Aspect ratio */
+        height: 0;
+        overflow: hidden;
+        background-color: #000;
+        border-radius: 12px;
+        box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.2);
+    }
+    .video-container video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        border-radius: 12px;
+    }
+    #btnCommander {
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    #btnCommander:hover {
+        background-color: #28a745;
+        transform: scale(1.05);
+    }
+    @media (max-width: 768px) {
+        .video-container {
+            padding-bottom: 56.25%;
+        }
+    }
+</style>
+{% endblock %}

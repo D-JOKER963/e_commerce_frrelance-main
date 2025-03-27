@@ -1,5 +1,7 @@
+from itertools import product
+
 from django.http import JsonResponse, HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from Product.models import Produit
 from .models import *
@@ -64,7 +66,6 @@ def enregistrer_commande(request):
 
         # Récupère les produits du panier depuis la session
         panier = request.session['panier']
-        print("Panier:", panier)  # Vérifie la structure du panier
 
         # Pour chaque produit dans le panier, crée une entrée dans ProduitCommande
         for produit_id, quantite in panier.items():  # Parcours chaque produit et sa quantité
@@ -93,3 +94,55 @@ def enregistrer_commande(request):
         return redirect('index')
     else:
         return redirect('vue_panier')  # Redirige vers la page panier si pas de panier
+
+
+
+def show_video(request, slug):
+    product = get_object_or_404(Produit.objects.prefetch_related('imageproduit_set'),slug=slug)
+
+    return render(request, 'Commande/show_video.html', {'product': product})
+
+
+def single_commande(request, slug):
+    print(request.session['video_finished'])
+    if not request.session.get('video_finished'):
+        return redirect('show_video', slug=slug)
+
+    product = get_object_or_404(Produit.objects.prefetch_related("imageproduit_set"),slug=slug)
+    if request.method == "POST":
+        nom = request.POST.get('nom')
+        prenom = request.POST.get('prenom')
+        adresse = request.POST.get('adresse')
+        tel = request.POST.get('telephone')
+        quantite = request.POST.get('quantite')
+        montant_total = float(request.POST.get("montant_total", 0))
+        nom_client = nom + " " + prenom
+
+        commande = Commande.objects.create(
+            nom_client=nom_client,
+            adresse=adresse,
+            telephone=tel,
+            montant_total=montant_total
+        )
+        ProduitCommande.objects.create(
+            commande=commande,
+            produit=product,
+            quantite=quantite,
+            montant=product.prix
+        )
+
+        messages.success(request, "Commande passée avec succès, Vous serez contacter pour confirmation de votre commande")
+        request.session['video_finished'] = False
+
+        return redirect('index')
+
+    return render(request, "Commande/single_commande.html",{"product":product})
+
+
+def mark_video_finished(request):
+    print("appel de fonction")
+    if request.method == "POST":
+        request.session['video_finished'] = True
+        return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+

@@ -262,7 +262,7 @@
                             <div class="product clearfix">
                                 <div class="product-image">
                                     {% for image in product.imageproduit_set.all %}
-                                    <a href="#"><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
+                                    <a href="{% url 'produit' product.slug %}"><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
                                     {% endfor %}
                                     <div class="product-overlay">
                                         <a href="{% url 'ajouter_au_panier' product.slug %}" class="add-to-cart"
@@ -270,9 +270,9 @@
                                             <i class="icon-shopping-cart"></i>
                                             <span> Ajouter au panier</span>
                                         </a>
-                                        <a href="include/ajax/shop-item.html" class="item-quick-view"
-                                           data-lightbox="ajax"><i
-                                                class="icon-zoom-in2"></i><span> Quick View</span></a>
+
+                                        <a href="{% url 'produit' product.slug %}" class=""
+                                        ><i class="icon-shopping-cart"></i><span>Commander </span></a>
                                     </div>
                                 </div>
                                 <div class="product-desc">
@@ -287,11 +287,7 @@
 
                                     </div>
                                     <div class="product-rating">
-                                        <i class="icon-star3"></i>
-                                        <i class="icon-star3"></i>
-                                        <i class="icon-star3"></i>
-                                        <i class="icon-star3"></i>
-                                        <i class="icon-star-half-full"></i>
+                                        <i>{{product.description}}</i>
                                     </div>
                                 </div>
                             </div>
@@ -330,7 +326,8 @@
                     <i class="icon-delicious"></i>
                 </a>
 
-                <a href="href=https://wa.me/+22870436043" class="social-icon si-whatsapp" data-toggle="tooltip" data-placement="top" title="WhatsApp">
+                <a href="href=https://wa.me/+22870436043" class="social-icon si-whatsapp" data-toggle="tooltip"
+                   data-placement="top" title="WhatsApp">
                     <i class="icon-whatsapp"></i>
                     <i class="icon-whatsapp"></i>
                 </a>
@@ -459,11 +456,9 @@
                         <span>Facilitez vos achats grace notre plateforme</span>
                     </div>
 
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eveniet cumque, perferendis accusamus
-                        porro illo exercitationem molestias.</p>
 
-                    <div class="widget-subscribe-form-result"></div>
-                    <form id="widget-subscribe-form3" action="include/subscribe.php" method="post"
+                    <!--div class="widget-subscribe-form-result"></div-->
+                    <!--form-- id="widget-subscribe-form3" action="include/subscribe.php" method="post"
                           class="nobottommargin">
                         <div class="input-group" style="max-width:400px;">
                             <div class="input-group-prepend">
@@ -475,7 +470,7 @@
                                 <button class="btn btn-danger" type="submit">Subscribe Now</button>
                             </div>
                         </div>
-                    </form>
+                    </form-->
 
                 </div>
 

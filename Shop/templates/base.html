@@ -236,7 +236,8 @@
                 <!-- Logo
                 ============================================= -->
                 <div id="logo">
-                    <a href="index.html" class="standard-logo" data-dark-logo="images/logo-dark.png"><p>Boutique</p></a>
+                    <a href="{% url 'index' %}" class="standard-logo" data-dark-logo="images/logo-dark.png"><p>
+                        Boutique</p></a>
                     <!--a href="index.html" class="retina-logo" data-dark-logo="images/logo-dark@2x.png"><img
                             src="{% static 'images/logo@2x.png' %}" alt="Boutique Logo"></a-->
                 </div><!-- #logo end -->
@@ -258,25 +259,24 @@
                         ============================================= -->
                         <li class="mega-menu"><a href="{% url 'index' %}#tab-3">
                             <div>Nos produits</div>
-                            </a>
+                        </a>
                         </li>
 
                         <li><a href="{% url 'vue_panier' %}">
                             <div>Mon panier</div>
-                            </a>
-
+                        </a>
 
 
                         </li><!-- .mega-menu end -->
                         <li><a href="#">
                             <div>Avis</div>
-                            </a></li>
+                        </a></li>
 
                     </ul>
 
                     <!-- Top Cart
                     ============================================= -->
-                    <div id="top-cart" >
+                    <div id="top-cart">
                         <a href="#" id="top-cart-trigger">
                             <i class="icon-shopping-cart"></i>
                             <span id="cart-count">{{ quantite_panier }}</span>
@@ -407,35 +407,15 @@
                                 <div class="spost clearfix">
                                     <div class="entry-c">
                                         <div class="entry-title">
-                                            <h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4>
+                                            <!--h4><a href="#">Lorem ipsum dolor sit amet, consectetur</a></h4-->
                                         </div>
                                         <ul class="entry-meta">
-                                            <li>10th July 2014</li>
+                                            <!--li>10th July 2014</li-->
                                         </ul>
                                     </div>
                                 </div>
 
-                                <div class="spost clearfix">
-                                    <div class="entry-c">
-                                        <div class="entry-title">
-                                            <h4><a href="#">Elit Assumenda vel amet dolorum quasi</a></h4>
-                                        </div>
-                                        <ul class="entry-meta">
-                                            <li>10th July 2014</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
-                                <div class="spost clearfix">
-                                    <div class="entry-c">
-                                        <div class="entry-title">
-                                            <h4><a href="#">Debitis nihil placeat, illum est nisi</a></h4>
-                                        </div>
-                                        <ul class="entry-meta">
-                                            <li>10th July 2014</li>
-                                        </ul>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -466,7 +446,7 @@
                         </div>
 
                     </div>
-
+                    <!-- newsletter
                     <div class="widget subscribe-widget clearfix">
                         <h5><strong>Subscribe</strong> to Our Newsletter to get Important News, Amazing Offers &amp;
                             Inside Scoops:</h5>
@@ -484,7 +464,7 @@
                                 </div>
                             </div>
                         </form>
-                    </div>
+                    </div-->
 
                     <div class="widget clearfix" style="margin-bottom: -20px;">
 
@@ -496,19 +476,10 @@
                                     <i class="icon-facebook"></i>
                                     <i class="icon-facebook"></i>
                                 </a>
-                                <a href="#"><small style="display: block; margin-top: 3px;"><strong>Like us</strong><br>on
+                                <a href="#"><small style="display: block; margin-top: 3px;"><strong>Suivez-nous</strong><br>sur
                                     Facebook</small></a>
                             </div>
-                            <div class="col-lg-6 clearfix">
-                                <a href="#" class="social-icon si-dark si-colored si-rss nobottommargin"
-                                   style="margin-right: 10px;">
-                                    <i class="icon-rss"></i>
-                                    <i class="icon-rss"></i>
-                                </a>
-                                <a href="#"><small
-                                        style="display: block; margin-top: 3px;"><strong>Subscribe</strong><br>to RSS
-                                    Feeds</small></a>
-                            </div>
+
 
                         </div>
 
@@ -527,11 +498,11 @@
             <div class="container clearfix">
 
                 <div class="col_half">
-                    Copyrights &copy; 2014 All Rights Reserved by Boutique Inc.<br>
-                    <div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div>
+                    Copyrights &copy; 2025 All Rights Reserved by Boutique Inc.<br>
+                    <!--div class="copyright-links"><a href="#">Terms of Use</a> / <a href="#">Privacy Policy</a></div-->
                 </div>
 
-                <div class="col_half col_last tright">
+                <!--div class="col_half col_last tright">
                     <div class="fright clearfix">
                         <a href="#" class="social-icon si-small si-borderless si-facebook">
                             <i class="icon-facebook"></i>
@@ -579,11 +550,11 @@
                     <i class="icon-envelope2"></i> info@Boutique.com <span class="middot">&middot;</span> <i
                         class="icon-headphones"></i> +91-11-6541-6369 <span class="middot">&middot;</span> <i
                         class="icon-skype2"></i> BoutiqueOnSkype
-                </div>
+                </div-->
 
             </div>
 
-        </div><!-- #copyrights end -->
+            </div><!-- #copyrights end -->
 
     </footer><!-- #footer end -->
 
