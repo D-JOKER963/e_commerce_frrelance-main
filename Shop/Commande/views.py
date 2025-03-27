@@ -3,7 +3,7 @@ from itertools import product
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from Product.models import Produit
+from Product.models import Produit, Avis
 from .models import *
 
 
@@ -109,6 +109,7 @@ def single_commande(request, slug):
         return redirect('show_video', slug=slug)
 
     product = get_object_or_404(Produit.objects.prefetch_related("imageproduit_set"),slug=slug)
+    avis = product.avis.all()
     if request.method == "POST":
         nom = request.POST.get('nom')
         prenom = request.POST.get('prenom')
@@ -136,7 +137,7 @@ def single_commande(request, slug):
 
         return redirect('index')
 
-    return render(request, "Commande/single_commande.html",{"product":product})
+    return render(request, "Commande/single_commande.html",{"product":product,"avis":avis})
 
 
 def mark_video_finished(request):
@@ -145,4 +146,18 @@ def mark_video_finished(request):
         request.session['video_finished'] = True
         return JsonResponse({'status': 'success'})
     return JsonResponse({'status': 'error'}, status=400)
+
+def ajout_avis(request,slug):
+    print("................................")
+    product = get_object_or_404(Produit.objects.all(),slug=slug)
+    if request.method == "POST":
+        commentaire = request.POST.get('commentaire')
+        utilisateur = request.POST.get('utilisateur')
+        Avis.objects.create(
+            produit = product,
+            commentaire=commentaire,
+            utilisateur = utilisateur
+        )
+        messages.success(request,"Votre avis est posté")
+        return redirect('index')
 

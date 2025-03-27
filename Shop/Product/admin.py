@@ -16,6 +16,6 @@ class ProduitAdmin(admin.ModelAdmin):
 class CategorieAdmin(admin.ModelAdmin):
     list_display = ('libelle')
 
-
+admin.site.register(Avis)
 admin.site.register(Categorie)
 admin.site.register(Produit,ProduitAdmin)

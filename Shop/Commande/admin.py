@@ -23,3 +23,4 @@ class CommandeAdmin(admin.ModelAdmin):
     produits_commandes.short_description = "Produits Commandés"
 
 admin.site.register(Commande,CommandeAdmin)
+
