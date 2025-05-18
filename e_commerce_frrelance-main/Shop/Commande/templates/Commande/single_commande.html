@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<section id="content">
+    <div class="content-wrap">
+        <div class="container clearfix">
+
+            <!-- Tableau du panier -->
+            <div class="table-responsive">
+                <table class="table cart">
+                    <thead>
+                        <tr>
+                            <th class="cart-product-thumbnail">Image</th>
+                            <th class="cart-product-name">Produit</th>
+                            <th class="cart-product-price">Prix</th>
+                            <th class="cart-product-quantity">Quantité</th>
+                            <th class="cart-product-subtotal">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="cart_item">
+                            <td class="cart-product-thumbnail">
+                                {% with product.imageproduit_set.first as image %}
+                                    {% if image.image %}
+                                        <a href="#"><img width="64" height="64" src="{{ image.image.url }}" alt="{{ product.nom }}"></a>
+                                    {% endif %}
+                                {% endwith %}
+                            </td>
+                            <td class="cart-product-name"><a href="#">{{ product.nom }}</a></td>
+                            <td class="cart-product-price">
+                                <span class="amount" data-price="{{ product.prix }}">{{ product.prix }}</span>
+                            </td>
+                            <td class="cart-product-quantity">
+                                <input type="number" name="quantity" value="1" class="qty form-control" min="1" data-price="{{ product.prix }}">
+                            </td>
+                            <td class="cart-product-subtotal">
+                                <span class="amount total">{{ product.prix|floatformat:2 }}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Formulaire de commande -->
+            <form id="order-form" method="POST" class="mt-4">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nom">Nom :</label>
+                        <input type="text" id="nom" name="nom" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="prenom">Prénom :</label>
+                        <input type="text" id="prenom" name="prenom" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="adresse">Adresse :</label>
+                        <input type="text" id="adresse" name="adresse" class="form-control" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="telephone">Téléphone :</label>
+                        <input type="tel" id="telephone" name="telephone" class="form-control" required>
+                    </div>
+                    <input type="hidden" name="quantite" id="hidden-quantity">
+                    <input type="hidden" name="montant_total" id="hidden-total">
+                </div>
+                <button type="submit" class="btn btn-primary">Commander</button>
+            </form>
+
+            <!-- Avis des utilisateurs -->
+            <h3 class="mt-5">Avis des utilisateurs</h3>
+            {% if avis %}
+                {% for a in avis %}
+                <div class="card my-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ a.utilisateur }}</h5>
+                        <p class="card-text">{{ a.commentaire }}</p>
+                        <small class="text-muted">Posté le {{ a.date_creation|date:"d/m/Y H:i" }}</small>
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>Aucun avis pour ce produit.</p>
+            {% endif %}
+
+            <!-- Formulaire d'avis -->
+            <h3 class="mt-4">Laisser un avis</h3>
+            <form method="post" action="{% url 'ajouter_avis' product.slug %}">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="utilisateur" placeholder="Votre nom" required><br><br>
+                    <textarea name="commentaire" rows="5" class="form-control" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary mt-2">Soumettre</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        function updateTotal(input) {
+            let quantity = parseInt(input.value) || 1;
+            let price = parseFloat(input.getAttribute('data-price'));
+            let totalCell = input.closest('tr').querySelector('.cart-product-subtotal .total');
+            let total = (quantity * price).toFixed(2);
+            totalCell.textContent = total;
+
+            // Mise à jour des champs cachés du formulaire
+            document.getElementById("hidden-quantity").value = quantity;
+            document.getElementById("hidden-total").value = total;
+        }
+
+        document.querySelectorAll('.qty').forEach(input => {
+            input.addEventListener('input', function() {
+                updateTotal(this);
+            });
+            input.addEventListener('blur', function() {
+                updateTotal(this);
+            });
+        });
+    });
+</script>
+{% endblock %}

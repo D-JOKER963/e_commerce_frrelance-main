@@ -1,0 +1,183 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+<!-- Page Title
+============================================= -->
+<section id="page-title">
+    <div class="container clearfix">
+        <h1>Mon panier</h1>
+
+    </div>
+</section><!-- #page-title end -->
+
+<!-- Content
+============================================= -->
+<section id="content">
+    <div class="content-wrap">
+        <div class="container clearfix">
+
+            <div class="row clearfix">
+                <div class="col-lg-6">
+                    <h3>Informations de facturation</h3>
+                    <form id="billing-form" name="billing-form" class="nobottommargin" action="{% url 'enregistrer_commande' %}" method="post">
+                        {% csrf_token %}
+                        <div class="col_half">
+                            <label for="prenom">Prénom :</label>
+                            <input type="text" id="prenom" name="prenom" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="col_half col_last">
+                            <label for="nom">Nom :</label>
+                            <input type="text" id="nom" name="nom" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="clear"></div>
+                        <div class="col_full">
+                            <label for="ville">Ville :</label>
+                            <input type="text" id="ville" name="ville" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="col_full">
+                            <label for="quartier">Quartier <span style="font-style:italic; text-transform:lowercase">(Donner une brève description de votre emplacement afin de faciliter la livraison)</span></label>
+                            <input type="text" id="quartier" name="quartier" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+                        <div class="col_full">
+                            <label for="tel">Votre numéro de telephone :</label>
+                            <input type="number" id="tel" name="tel" value=""
+                                   class="sm-form-control" required/>
+                        </div>
+
+                         <input type="hidden" id="total-panier-input" name="total_panier" value="" required>
+                        <input type="submit" class="button button-3d fright" value="Passer la commande"/>
+                    </form>
+                </div>
+
+                <div class="col-lg-6">
+                    <h4>Vos Commandes</h4>
+                    <div class="table-responsive">
+                        <table class="table cart">
+                            <thead>
+                            <tr>
+                                <th class="cart-product-thumbnail">&nbsp;</th>
+                                <th class="cart-product-name">Produit</th>
+                                <th class="cart-product-quantity">Quantité</th>
+                                <th class="cart-product-subtotal">Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for item in produits_panier %}
+                            <tr class="cart_item">
+                                <td class="cart-product-thumbnail">
+                                    {% for image in item.produit.imageproduit_set.all %}
+                                    <a href="#"><img src="{{image.image.url}}" alt="{{product.nom}}"></a>
+                                    {% endfor %}
+                                </td>
+                                <td class="cart-product-name">
+                                    <a href="#">{{ item.produit.nom }}</a>
+                                </td>
+                                <td class="cart-product-quantity">
+                                    <div class="quantity clearfix">
+                                        {{ item.quantite }}x
+                                    </div>
+                                </td>
+                                <td class="cart-product-subtotal">
+                                    <span class="amount">{{ item.total|floatformat:2 }} XOF</span>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <h4>Total du Panier</h4>
+                    <div class="table-responsive">
+                        <table class="table cart">
+                            <tbody>
+                            <tr class="cart_item">
+                                <td class="notopborder cart-product-name">
+                                    <strong>Total du panier</strong>
+                                </td>
+                                <td class="notopborder cart-product-name">
+                                    <span class="amount">{{ total_panier|floatformat:2 }} XOF</span>
+                                </td>
+                            </tr>
+                            <tr class="cart_item">
+                                <td class="cart-product-name">
+                                    <strong>Livraison</strong>
+                                </td>
+                                <td class="cart-product-name">
+                                    <span class="amount">Livraison gratuite</span>
+                                </td>
+                            </tr>
+                            <tr class="cart_item">
+                                <td class="cart-product-name">
+                                    <strong>Total</strong>
+                                </td>
+                                <td class="cart-product-name">
+                                    <span class="amount color lead"><strong>{{ total_panier|floatformat:2 }} XOF</strong></span>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
+
+                    <!-- Button to Delete Cart -->
+                    <button id="delete-cart-btn" class="button button-3d fright">Vider le panier</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><!-- #content end -->
+
+<div id="gotoTop" class="icon-angle-up"></div>
+
+<script src="js/jquery.js"></script>
+<script src="js/plugins.js"></script>
+<script src="js/functions.js"></script>
+
+<script>
+    document.getElementById("delete-cart-btn").addEventListener("click", function() {
+        if (confirm("Êtes-vous sûr de vouloir supprimer tous les produits de votre panier ? Cette action est irréversible.")) {
+            fetch("{% url 'supprimer_panier' %}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': '{{ csrf_token }}',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    window.location.reload();
+                }
+            });
+        }
+    });
+</script>
+<script>
+    window.onload = function() {
+        // Récupère l'élément contenant le montant total
+        let totalPanierElement = document.querySelector('.cart-product-name .amount');
+
+        // Si l'élément existe
+        if (totalPanierElement) {
+            // Récupère la valeur du total en XOF
+            let totalPanier = parseFloat(totalPanierElement.textContent.replace(' XOF', '').trim());
+
+            console.log("Montant total du panier: ", totalPanier);
+
+            // Si tu souhaites mettre à jour un autre élément ou utiliser ce montant
+            // Par exemple, dans un champ caché pour l'envoyer avec le formulaire :
+            document.getElementById("total-panier-input").value = totalPanier;
+        }
+    }
+</script>
+
+{% endblock %}
