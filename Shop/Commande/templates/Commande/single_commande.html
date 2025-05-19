@@ -35,7 +35,7 @@
                                 <input type="number" name="quantity" value="1" class="qty form-control" min="1" data-price="{{ product.prix }}">
                             </td>
                             <td class="cart-product-subtotal">
-                                <span class="amount total">{{ product.prix|floatformat:2 }}</span>
+                                <input type="number" value="{{ product.prix|floatformat:2 }}" >
                             </td>
                         </tr>
                     </tbody>

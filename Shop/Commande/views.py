@@ -105,7 +105,7 @@ Veuillez traiter cette commande dès que possible.
             subject="Nouvelle Commande Client",
             message=message_email,
             from_email="boutique@site.com",
-            recipient_list=["kossibalogou83@gmail.com", "urbainbalogou19@gmail.com"],
+            recipient_list=["desidjoker@gmail.com", "urbainbalogou19@gmail.com","damewagou@gmail.com","deborahdzahini2@gmail.com"],
             fail_silently=False,
         )
 
@@ -117,15 +117,11 @@ Veuillez traiter cette commande dès que possible.
 
 def show_video(request, slug):
     product = get_object_or_404(Produit.objects.prefetch_related('imageproduit_set'), slug=slug)
-
+    print(f"..........{product}")
     return render(request, 'Commande/show_video.html', {'product': product})
 
 
 def single_commande(request, slug):
-    print(request.session['video_finished'])
-    if not request.session.get('video_finished'):
-        return redirect('show_video', slug=slug)
-
     product = get_object_or_404(Produit.objects.prefetch_related("imageproduit_set"), slug=slug)
     avis = product.avis.all()
     if request.method == "POST":
@@ -155,7 +151,7 @@ def single_commande(request, slug):
             subject="Nouvelle Commande",
             message=f"Une nouvelle commande a été effectuée par {nom_client} pour la commande {slug}.",
             from_email="boutique@site.com",
-            recipient_list=["kossibalogou83@gmail.com", "urbainbalogou19@gmail.com"],
+            recipient_list=["desidjoke@gmail.com", "urbainbalogou19@gmail.com","damewagou@gmail.com","deborahdzahini2@gmail.com"],
             fail_silently=False,
         )
 
